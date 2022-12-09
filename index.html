@@ -27,7 +27,7 @@
                     <input class="form-control" id="pdffile" name="pdffile" type="file" accept="application/pdf">
                 </div>
                 <div class="pt-3">
-                    <button id="btn " class="btn btn-warning" onclick="convert()">Process pdf file</button>
+                    <button id="btn" class="btn btn-warning" onclick="convert()">Process pdf file</button>
                 </div>
             </div>
 
@@ -59,17 +59,22 @@
 <script>
 
     const copyToClipboard = () => {
-        const pdfResult = document.getElementById('result').innerHTML
+        let pdfResult = document.getElementById('result').innerHTML
 
         navigator.clipboard.writeText(pdfResult);
 
-        console.log(pdfResult)
     }
 
 
 
 
     function convert() {
+
+        document.getElementById('result').innerHTML = ""
+
+        document.getElementById("btn").disabled = true;
+        document.getElementById("btn").innerHTML = "Extracting please wait";
+
         var fr = new FileReader();
         var pdff = new Pdf2TextClass();
         fr.onload = function () {
@@ -114,6 +119,8 @@
                                 }
 
                                 textContent != null && console.log("page " + n + " finished."); //" content: \n" + page_text);
+                                textContent != null && (document.getElementById("btn").disabled = false) //" content: \n" + page_text);
+                                textContent != null && (document.getElementById("btn").innerHTML = "Process pdf file") //" content: \n" + page_text);
                                 layers[n] = page_text + "\n\n";
                             }
                             ++self.complete;
